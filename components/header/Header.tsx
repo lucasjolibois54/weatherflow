@@ -10,16 +10,20 @@ export default function Header() {
 
     const getDisplayLocation = () => {
         if (searchedCity) return searchedCity;
-        if (weatherData) {
-            let location = weatherData.name;
-            if (weatherData.sys?.country) location += `, ${weatherData.sys.country}`;
-            return location;
+      
+        if (weatherData?.name) {
+          const { name } = weatherData;
+          const country = weatherData.sys?.country;
+          return country ? `${name}, ${country}` : name;
         }
-        if (lat !== null && lon !== null) {
-            return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+      
+        if (lat != null && lon != null) {
+          return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
         }
+      
         return 'Unknown location';
-    };
+      };
+      
 
     const locationName = getDisplayLocation();
 
