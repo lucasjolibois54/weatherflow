@@ -21,8 +21,11 @@ export default function WeatherDashboard() {
       {weatherData && (
         <div className="mt-4 bg-white/10 backdrop-blur-md p-4 rounded-xl shadow">
           <p className="text-lg font-medium">
-            {weatherData.name} - {weatherData.weather[0].description}
-          </p>
+  {weatherData.name}
+  {weatherData.sys?.country && `, ${weatherData.sys.country}`}
+  {weatherData.state && ` (${weatherData.state})`} – {weatherData.weather[0].description}
+</p>
+
           <p className="text-4xl font-bold">
             {Math.round(weatherData.main.temp)}° {unit === 'metric' ? 'C' : 'F'}
           </p>
