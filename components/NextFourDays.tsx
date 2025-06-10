@@ -14,14 +14,14 @@ type Props = {
 
 export default function NextFourDays({ days }: Props) {
   return (
-    <div className="flex gap-4 w-full justify-between">
+    <div className="flex gap-4 w-full h-full justify-between">
       {days.slice(0, 4).map((day) => {
         const avgTemp = Math.round((day.temp_min + day.temp_max) / 2);
 
         return (
           <div
             key={day.date}
-            className="w-[120px] bg-gradient-to-b from-white/5 to-white/10 border border-white/10 backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col justify-between"
+            className="w-full bg-gradient-to-b from-white/5 to-white/10 border border-white/10 backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col justify-between"
           >
             {/* Top: Day + Avg Temp */}
             <div className="flex justify-between mb-2 text-sm">

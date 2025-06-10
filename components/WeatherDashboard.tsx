@@ -35,7 +35,7 @@ export default function WeatherDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-700 to-indigo-800 p-4">
       <Header />
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Title & Subtitle */}
         <div className="text-center mb-6">
           <h1 className="text-4xl font-bold text-white mb-2">WeatherPulse 🌦</h1>
@@ -44,11 +44,11 @@ export default function WeatherDashboard() {
 
           {/* Cards */}
           <div className="flex flex-col md:flex-row gap-4 mb-6">
-  <div className="flex-1">
+  <div className="w-1/3">
     <TodaysWeatherCard />
   </div>
   {forecast && forecast.length > 0 && (
-    <div className="flex gap-4 flex-1">
+    <div className="w-2/3">
       <NextFourDays days={forecast} />
     </div>
   )}
