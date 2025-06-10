@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useWeather } from '@/context/WeatherContext';
+import Toast from '@/components/Toast';
 
 export default function SearchInput() {
   const [query, setQuery] = useState('');
@@ -28,7 +29,7 @@ export default function SearchInput() {
 
       const data = await res.json();
       if (data.length === 0) {
-        setSearchError('City not found. Try a different name.');
+        setSearchError('Invalid location. Try a city or populated area.');
         return;
       }
 
@@ -48,27 +49,26 @@ export default function SearchInput() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative w-64 mx-auto">
-      <input
-        type="text"
-        value={query}
-        placeholder="Search city..."
-        onChange={(e) => setQuery(e.target.value)}
-        className="bg-white/5 border border-white/20 w-full pl-4 pr-10 py-2 rounded-full text-sm placeholder-gray-400 focus:outline-none"
-        disabled={searching}
-      />
-      <button
-        type="submit"
-        disabled={searching || !query.trim()}
-        className="absolute right-2 top-2.5 text-gray-400 hover:text-white transition cursor-pointer"
-      >
-        {searching ? '⏳' : <FiSearch />}
-      </button>
-      {searchError && (
-        <p className="absolute -bottom-5 left-0 w-full text-xs text-red-400 text-center">
-          {searchError}
-        </p>
-      )}
-    </form>
+    <>
+      <form onSubmit={handleSearch} className="relative w-64 mx-auto">
+        <input
+          type="text"
+          value={query}
+          placeholder="Search city..."
+          onChange={(e) => setQuery(e.target.value)}
+          className="bg-white/5 border border-white/20 w-full pl-4 pr-10 py-2 rounded-full text-sm placeholder-gray-400 focus:outline-none"
+          disabled={searching}
+        />
+        <button
+          type="submit"
+          disabled={searching || !query.trim()}
+          className="absolute right-2 top-2.5 text-gray-400 hover:text-white transition cursor-pointer"
+        >
+          {searching ? '⏳' : <FiSearch />}
+        </button>
+      </form>
+
+      {searchError && <Toast message={searchError} />}
+    </>
   );
 }

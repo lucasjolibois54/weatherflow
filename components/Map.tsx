@@ -10,6 +10,7 @@ import {
 import { useWeather } from '@/context/WeatherContext';
 import { useState, useMemo, useEffect } from 'react';
 import L from 'leaflet';
+import Toast from '@/components/Toast';
 
 // 📍 Emoji pin icon
 const pinIcon = new L.DivIcon({
@@ -89,32 +90,32 @@ export default function Map() {
   if (!isClient) return null;
 
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg border border-white/20">
+    <>
+      <div className="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg border border-white/20">
       <MapContainer
-        center={position || [20, 0]}
-        zoom={position ? 6 : 2}
-        style={{ width: '100%', height: '100%' }}
-        maxBounds={[
-          [-85, -180],
-          [85, 180],
-        ]}
-        maxBoundsViscosity={1.0}
-      >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-        />
+  center={position || [20, 0]}
+  zoom={position ? 6 : 2}
+  minZoom={2}
+  maxBounds={[
+    [-85, -180],
+    [85, 180],
+  ]}
+  maxBoundsViscosity={1.0}
+  style={{ width: '100%', height: '100%' }}
+>
 
-        <LocationClickHandler setClickError={setClickError} />
-        <MapController />
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+          />
 
-        {position && <Marker position={position} icon={pinIcon} />}
-      </MapContainer>
+          <LocationClickHandler setClickError={setClickError} />
+          <MapController />
 
-      {clickError && (
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-red-400 text-center px-2">
-          {clickError}
-        </div>
-      )}
-    </div>
+          {position && <Marker position={position} icon={pinIcon} />}
+        </MapContainer>
+      </div>
+
+      {clickError && <Toast message={clickError} />}
+    </>
   );
 }
