@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import Header from './header/Header';
 import BackgroundVideo from './BackgroundVideo';
 
+// Load map dynamically to avoid SSR issues)
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
   loading: () => (
@@ -17,32 +18,20 @@ const Map = dynamic(() => import('./Map'), {
 });
 
 export default function WeatherDashboard() {
-  const { lat, lon, weatherData, forecast, searchedCity } = useWeather();
-
-  const getDisplayLocation = () => {
-    if (searchedCity) return searchedCity;
-    if (weatherData) {
-      let location = weatherData.name;
-      if (weatherData.sys?.country) location += `, ${weatherData.sys.country}`;
-      return location;
-    }
-    return null;
-  };
-
-  const displayLocation = getDisplayLocation();
+  const { forecast } = useWeather();
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background Video Layer */}
+      {/* Background video layer behind everything */}
       <div className="absolute inset-0 z-0">
         <BackgroundVideo />
       </div>
 
-      {/* Foreground Content */}
+      {/* Foreground content */}
       <div className="relative z-10 min-h-screen py-10 px-4">
         <Header />
         <div className="max-w-7xl mx-auto">
-          {/* Title & Subtitle */}
+          {/* Page title and intro */}
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-white mb-2 mt-16">WeatherFlow 🌦</h1>
             <p className="text-white/80">Click on the map or search for a city</p>
@@ -62,19 +51,6 @@ export default function WeatherDashboard() {
 
           {/* Map */}
           <Map />
-
-          {/* Optional: Location Info */}
-          {/* 
-          <div className="mt-4 text-center">
-            {lat && lon ? (
-              <p className="text-white/90">
-                📍 {displayLocation || `${lat.toFixed(2)}, ${lon.toFixed(2)}`}
-              </p>
-            ) : (
-              <p className="text-white/60">Select a location to see weather information</p>
-            )}
-          </div>
-          */}
         </div>
       </div>
     </div>

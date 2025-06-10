@@ -6,8 +6,10 @@ import { useWeather } from '@/context/WeatherContext';
 export default function BackgroundVideo() {
   const { searchedCity, weatherData } = useWeather();
 
+  // Determine location name from searched city or weather data
   const location = searchedCity || weatherData?.name || '';
 
+  // State for video URL, poster image, and loading status
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [poster, setPoster] = useState<string | null>(null);
@@ -16,8 +18,10 @@ export default function BackgroundVideo() {
     if (!location) return;
 
     const fetchVideo = async () => {
-      setIsLoaded(false);
+      setIsLoaded(false); // Reset loading state
+
       try {
+        // Fetch a video from Pexels API based on location name
         const res = await fetch(
           `https://api.pexels.com/videos/search?query=${location}&per_page=1`,
           {
@@ -26,10 +30,15 @@ export default function BackgroundVideo() {
             },
           }
         );
+
         const data = await res.json();
         const video = data.videos?.[0];
+
+        // Pick the SD version if available, or fallback to the first video file
         const bestFile =
           video?.video_files?.find((f: any) => f.quality === 'sd') || video?.video_files?.[0];
+
+        // Use preview image as poster (blurred fallback)
         const previewImage = video?.image || null;
 
         setVideoUrl(bestFile?.link || null);
@@ -44,7 +53,7 @@ export default function BackgroundVideo() {
 
   return (
     <>
-      {/* Video */}
+      {/* Video background */}
       {videoUrl && (
         <video
           key={videoUrl}
@@ -63,7 +72,7 @@ export default function BackgroundVideo() {
         </video>
       )}
 
-      {/* Poster Fallback */}
+      {/* Blurred image fallback while video loads */}
       {poster && (
         <img
           src={poster}
@@ -74,7 +83,7 @@ export default function BackgroundVideo() {
         />
       )}
 
-      {/* Dark Overlay */}
+      {/* Dark overlay for better contrast on top of video */}
       <div className="absolute inset-0 bg-black/60 z-0" />
     </>
   );

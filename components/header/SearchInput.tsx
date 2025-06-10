@@ -11,6 +11,7 @@ export default function SearchInput() {
   const [searchError, setSearchError] = useState('');
   const { setCoordinates } = useWeather();
 
+  // Handles search form submission and fetches location coordinates
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setSearchError('');
@@ -19,6 +20,7 @@ export default function SearchInput() {
     setSearching(true);
 
     try {
+      // Fetch coordinates using OpenWeather's geocoding API
       const res = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
           query
@@ -33,11 +35,13 @@ export default function SearchInput() {
         return;
       }
 
+      // Format display name (e.g., "Paris, Île-de-France, FR")
       const { lat, lon, name, state, country } = data[0];
       let displayName = name;
       if (state && state !== name) displayName += `, ${state}`;
       if (country) displayName += `, ${country}`;
 
+      // Update global context with new coordinates and name
       setCoordinates(lat, lon, displayName);
       setQuery('');
     } catch (err) {
@@ -68,6 +72,7 @@ export default function SearchInput() {
         </button>
       </form>
 
+      {/* Show toast if an error occurred during search */}
       {searchError && <Toast message={searchError} />}
     </>
   );

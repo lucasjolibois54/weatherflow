@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 
+// Current weather structure from OpenWeather API
 type WeatherData = {
   name: string;
   sys: {
@@ -25,6 +26,7 @@ type WeatherData = {
   };
 };
 
+// Simplified format for daily forecast
 type ForecastDay = {
   date: string;
   temp_min: number;
@@ -33,6 +35,7 @@ type ForecastDay = {
   icon: string;
 };
 
+// Everything that’s available in the weather context
 type WeatherContextType = {
   lat: number;
   lon: number;
@@ -46,42 +49,45 @@ type WeatherContextType = {
   setUnit: (unit: 'metric' | 'imperial') => void;
 };
 
+// Create the context
 const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 
+// Handles all weather logic and makes data available to the rest of the app (wrap)
 export const WeatherProvider = ({ children }: { children: React.ReactNode }) => {
-  // Default to Copenhagen
+  // Default location: Copenhagen
   const [lat, setLat] = useState<number>(55.6761);
   const [lon, setLon] = useState<number>(12.5683);
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric');
+
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecast, setForecast] = useState<ForecastDay[] | null>(null);
-  const [searchedCity, setSearchedCity] = useState<string>('Copenhagen');
+  const [searchedCity, setSearchedCity] = useState<string>('Copenhagen, DK');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Fetch weather and forecast data when location or unit changes
   useEffect(() => {
     const fetchWeather = async () => {
       setLoading(true);
       setError('');
 
       try {
-        // Fetch current weather
+        // Get current weather
         const weatherRes = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
         );
-
         if (!weatherRes.ok) throw new Error('Weather data not found');
         const weather = await weatherRes.json();
         setWeatherData(weather);
 
-        // Fetch forecast
+        // Get 5-day forecast
         const forecastRes = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${unit}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
         );
-
         if (!forecastRes.ok) throw new Error('Forecast data not found');
         const rawForecast = await forecastRes.json();
 
+        // Group entries by date
         const grouped: Record<string, any[]> = {};
         rawForecast.list.forEach((entry: any) => {
           const date = entry.dt_txt.split(' ')[0];
@@ -91,6 +97,7 @@ export const WeatherProvider = ({ children }: { children: React.ReactNode }) => 
 
         const today = new Date().toISOString().split('T')[0];
 
+        // Pick 4 days (excluding today) and format them
         const forecastDays: ForecastDay[] = Object.entries(grouped)
           .filter(([date]) => date !== today)
           .slice(0, 4)
@@ -122,12 +129,14 @@ export const WeatherProvider = ({ children }: { children: React.ReactNode }) => 
     fetchWeather();
   }, [lat, lon, unit]);
 
+  // Used when user searches or updates location manually
   const setCoordinates = (newLat: number, newLon: number, cityName?: string) => {
     setLat(newLat);
     setLon(newLon);
     setSearchedCity(cityName || '');
   };
 
+  // Expose all state and functions via context
   return (
     <WeatherContext.Provider
       value={{
@@ -148,6 +157,7 @@ export const WeatherProvider = ({ children }: { children: React.ReactNode }) => 
   );
 };
 
+// Hook for accessing the weather context from any component
 export const useWeather = () => {
   const context = useContext(WeatherContext);
   if (!context) throw new Error('useWeather must be used within WeatherProvider');
