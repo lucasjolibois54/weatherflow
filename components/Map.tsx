@@ -3,11 +3,12 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, useMapEvents, Marker } from 'react-leaflet';
 import { useWeather } from '@/context/WeatherContext';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import L from 'leaflet';
 
+// Custom 📍 emoji icon
 const pinIcon = new L.DivIcon({
-  html: '📍',
+  html: '<div style="font-size: 24px;">📍</div>',
   className: '',
   iconSize: [24, 24],
   iconAnchor: [12, 24],
@@ -18,9 +19,27 @@ function LocationClickHandler() {
 
   useMapEvents({
     click(e) {
+      // When clicking on map, don't pass a city name (will use weather station name)
       setCoordinates(e.latlng.lat, e.latlng.lng);
     },
   });
+
+  return null;
+}
+
+function MapController() {
+  const { lat, lon } = useWeather();
+  const map = useMapEvents({});
+
+  useEffect(() => {
+    if (lat !== null && lon !== null) {
+      // Smoothly pan to the new location when coordinates change
+      map.setView([lat, lon], Math.max(map.getZoom(), 6), {
+        animate: true,
+        duration: 1,
+      });
+    }
+  }, [lat, lon, map]);
 
   return null;
 }
@@ -34,18 +53,25 @@ export default function Map() {
   }, [lat, lon]);
 
   return (
-    <div className="w-full h-[300px] md:h-[400px] mt-4 rounded-xl overflow-hidden">
+    <div className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden shadow-lg border border-white/20">
       <MapContainer
         center={position || [20, 0]}
         zoom={position ? 6 : 2}
         style={{ width: '100%', height: '100%' }}
         whenReady={() => setMapReady(true)}
+        className="z-0"
       >
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {mapReady && <LocationClickHandler />}
+        
+        {mapReady && (
+          <>
+            <LocationClickHandler />
+            <MapController />
+          </>
+        )}
 
         {position && (
           <Marker position={position} icon={pinIcon} />
