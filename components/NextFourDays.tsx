@@ -1,5 +1,7 @@
 'use client';
 
+import { useWeather } from '@/context/WeatherContext';
+
 type DayForecast = {
   date: string;
   temp_min: number;
@@ -13,8 +15,11 @@ type Props = {
 };
 
 export default function NextFourDays({ days }: Props) {
+  const { unit } = useWeather();
+  const unitSymbol = unit === 'metric' ? '°C' : '°F';
+
   return (
-    <div className="h-full overflow-x-auto md:overflow-visible pb-4 sm:pb-0"> {/* <-- moved scrollbar down */}
+    <div className="h-full overflow-x-auto md:overflow-visible pb-4 sm:pb-0">
       <div className="flex md:grid md:grid-cols-4 gap-4 h-full">
         {days.slice(0, 4).map((day) => {
           const avgTemp = Math.round((day.temp_min + day.temp_max) / 2);
@@ -31,7 +36,9 @@ export default function NextFourDays({ days }: Props) {
                     weekday: 'short',
                   })}
                 </span>
-                <span className="text-white/60">{avgTemp}°</span>
+                <span className="text-white/60">
+                  {avgTemp}{unitSymbol}
+                </span>
               </div>
 
               {/* Weather Icon */}
@@ -45,10 +52,10 @@ export default function NextFourDays({ days }: Props) {
               {/* Bottom: Min + Max */}
               <div className="space-y-1 mt-1 text-xs text-white/60">
                 <div>
-                  Min: <span className="text-white/80">{Math.round(day.temp_min)}°</span>
+                  Min: <span className="text-white/80">{Math.round(day.temp_min)}{unitSymbol}</span>
                 </div>
                 <div>
-                  Max: <span className="text-white/80">{Math.round(day.temp_max)}°</span>
+                  Max: <span className="text-white/80">{Math.round(day.temp_max)}{unitSymbol}</span>
                 </div>
               </div>
             </div>
