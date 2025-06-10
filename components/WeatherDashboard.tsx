@@ -5,67 +5,78 @@ import TodaysWeatherCard from './TodaysWeatherCard';
 import NextFourDays from './NextFourDays';
 import dynamic from 'next/dynamic';
 import Header from './header/Header';
+import BackgroundVideo from './BackgroundVideo';
 
 const Map = dynamic(() => import('./Map'), {
-    ssr: false,
-    loading: () => (
-        <div className="w-full h-[300px] md:h-[400px] rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-            <div className="text-white/60">Loading map...</div>
-        </div>
-    ),
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[300px] md:h-[400px] rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+      <div className="text-white/60">Loading map...</div>
+    </div>
+  ),
 });
 
 export default function WeatherDashboard() {
-    const { lat, lon, weatherData, forecast, searchedCity } = useWeather();
+  const { lat, lon, weatherData, forecast, searchedCity } = useWeather();
 
-    const getDisplayLocation = () => {
-        if (searchedCity) return searchedCity;
-        if (weatherData) {
-            let location = weatherData.name;
-            if (weatherData.sys?.country) location += `, ${weatherData.sys.country}`;
-            return location;
-        }
-        return null;
-    };
+  const getDisplayLocation = () => {
+    if (searchedCity) return searchedCity;
+    if (weatherData) {
+      let location = weatherData.name;
+      if (weatherData.sys?.country) location += `, ${weatherData.sys.country}`;
+      return location;
+    }
+    return null;
+  };
 
-    const displayLocation = getDisplayLocation();
+  const displayLocation = getDisplayLocation();
 
-    return (
-        <div className="min-h-screen py-10 bg-gradient-to-br from-blue-900 via-blue-700 to-indigo-800 p-4">
-            <Header />
-            <div className="max-w-7xl mx-auto">
-                {/* Title & Subtitle */}
-                <div className="text-center mb-6">
-                    <h1 className="text-4xl font-bold text-white mb-2 mt-16">WeatherPulse 🌦</h1>
-                    <p className="text-white/80">Click on the map or search for a city</p>
-                </div>
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background Video Layer */}
+      <div className="absolute inset-0 z-0">
+        <BackgroundVideo />
+      </div>
 
-                {/* Cards */}
-                <div className="flex flex-col md:flex-row gap-4 mb-6">
-                    <div className="w-full md:w-2/5 lg:w-1/3">
-                        <TodaysWeatherCard />
-                    </div>
-                    {forecast && forecast.length > 0 && (
-                        <div className="w-full md:w-3/5 lg:w-2/3">
-                            <NextFourDays days={forecast} />
-                        </div>
-                    )}
-                </div>
+      {/* Foreground Content */}
+      <div className="relative z-10 min-h-screen py-10 px-4">
+        <Header />
+        <div className="max-w-7xl mx-auto">
+          {/* Title & Subtitle */}
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold text-white mb-2 mt-16">WeatherFlow 🌦</h1>
+            <p className="text-white/80">Click on the map or search for a city</p>
+          </div>
 
-                {/* Map */}
-                <Map />
-
-                {/* Location Info */}
-                {/* <div className="mt-4 text-center">
-          {lat && lon ? (
-            <p className="text-white/90">
-              📍 {displayLocation || `${lat.toFixed(2)}, ${lon.toFixed(2)}`}
-            </p>
-          ) : (
-            <p className="text-white/60">Select a location to see weather information</p>
-          )}
-        </div> */}
+          {/* Cards */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="w-full md:w-2/5 lg:w-1/3">
+              <TodaysWeatherCard />
             </div>
+            {forecast && forecast.length > 0 && (
+              <div className="w-full md:w-3/5 lg:w-2/3">
+                <NextFourDays days={forecast} />
+              </div>
+            )}
+          </div>
+
+          {/* Map */}
+          <Map />
+
+          {/* Optional: Location Info */}
+          {/* 
+          <div className="mt-4 text-center">
+            {lat && lon ? (
+              <p className="text-white/90">
+                📍 {displayLocation || `${lat.toFixed(2)}, ${lon.toFixed(2)}`}
+              </p>
+            ) : (
+              <p className="text-white/60">Select a location to see weather information</p>
+            )}
+          </div>
+          */}
         </div>
-    );
+      </div>
+    </div>
+  );
 }

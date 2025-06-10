@@ -25,17 +25,12 @@ function formatTime(unixTimestamp?: number): string {
 export default function TodaysWeatherCard() {
   const { weatherData, searchedCity, loading, error, unit } = useWeather();
   const [visibleData, setVisibleData] = useState(weatherData);
-  const [fading, setFading] = useState(false);
   const prevData = useRef(weatherData);
 
   useEffect(() => {
     if (!loading && weatherData && weatherData !== prevData.current) {
-      setFading(true);
-      setTimeout(() => {
-        setVisibleData(weatherData);
-        prevData.current = weatherData;
-        setFading(false);
-      }, 150);
+      setVisibleData(weatherData);
+      prevData.current = weatherData;
     }
   }, [weatherData, loading]);
 
@@ -53,8 +48,10 @@ export default function TodaysWeatherCard() {
 
   if (error) {
     return (
-      <div className="mt-6 bg-red-500/20 backdrop-blur-md p-4 rounded-xl border border-red-400/30">
-        <p className="text-red-200 text-center">❌ {error}</p>
+      <div className="w-7xl mx-auto">
+        <div className="mt-6 bg-red-500/20 backdrop-blur-md p-4 rounded-xl border border-red-400/30">
+          <p className="text-red-200 text-center">❌ {error}</p>
+        </div>
       </div>
     );
   }
@@ -74,11 +71,7 @@ export default function TodaysWeatherCard() {
   ];
 
   return (
-    <div
-      className={`bg-blue-100/90 text-black p-5 rounded-2xl shadow-lg flex flex-col justify-between transition-opacity duration-300 ${
-        fading ? 'opacity-0' : 'opacity-100'
-      }`}
-    >
+    <div className="bg-blue-100/90 text-black p-5 rounded-2xl shadow-lg flex flex-col justify-between">
       <div className="flex justify-between items-center mb-1 text-sm font-semibold text-gray-700">
         <span>{displayLocation} • Today</span>
       </div>
