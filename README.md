@@ -1,6 +1,6 @@
 # WeatherFlow ☀️🌧️
 
-A beautifully styled, modern weather app built with **Next.js**, **Tailwind CSS**, and **React Leaflet**. It fetches real-time weather data from OpenWeather API (v2.5, free tier) and displays stunning **background videos** based on the searched city using the Pexels API.
+A beautifully styled, modern weather app built with **Next.js**, **Tailwind CSS**, and **React Leaflet**. It fetches real-time weather data from OpenWeather API (v2.5, free tier) and displays stunning **background videos** based on the searched location using the Pexels API.
 
 ---
 
