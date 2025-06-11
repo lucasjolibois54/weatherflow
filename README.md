@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WeatherFlow ☀️🌧️
 
-## Getting Started
+A beautifully styled, modern weather app built with **Next.js**, **Tailwind CSS**, and **React Leaflet**. It fetches real-time weather data from OpenWeather API (v2.5, free tier) and displays stunning **background videos** based on the searched city using the Pexels API.
 
-First, run the development server:
+---
+
+## 📷 Project Image
+
+<p float="left">
+  <img src="https://raw.githubusercontent.com/lucasjolibois54/weatherflow/main/public/app-image.png" width="100%" />
+</p>
+
+---
+
+## 🚀 Features
+
+- 🌍 Search for weather by city or click anywhere on the map  
+- 🗺️ Interactive map with dark styling and click-to-select  
+- 📍 Location detection and reverse geocoding  
+- 🌡️ Toggle between Celsius and Fahrenheit  
+- 🎥 Dynamic **background videos** based on current location  
+- 🌤️ Current weather and 4-day forecast  
+- ⚡ Fully responsive and mobile-friendly  
+- 💅 Styled using Tailwind CSS with glassmorphism UI  
+
+---
+
+## 🛠️ Tech Stack
+
+- Next.js (App Router)
+- React & TypeScript
+- Tailwind CSS
+- React Leaflet
+- React Icons
+- OpenWeather API (v2.5, Free Tier)
+- Pexels API (for background videos)
+
+---
+
+## 🔧 Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/lucasjolibois54/weatherflow.git
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Set environment variables
+
+Create a `.env.local` file in the root of the project and add:
+
+```env
+NEXT_PUBLIC_WEATHER_API_KEY=your_openweather_api_key
+NEXT_PUBLIC_PEXELS_API_KEY=your_pexels_api_key
+```
+
+> You can get your API keys from:  
+> 🔗 [https://openweathermap.org/api](https://openweathermap.org/api)  
+> 🔗 [https://www.pexels.com/api/](https://www.pexels.com/api/)
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 Notes
 
-## Learn More
+- Weather data is fetched from OpenWeather API v2.5 using the free tier  
+- Uses **context** to manage weather data, temperature units, and coordinates  
+- Map is rendered client-side using `dynamic` import with `ssr: false`  
+- Weather-based video backgrounds pulled from Pexels dynamically
+- Fully commented and clean code structure
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👨‍💻 Developed by
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[Lucas Jolibois](https://lucasjolibois.com)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
