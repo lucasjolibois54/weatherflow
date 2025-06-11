@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useWeather } from '@/context/WeatherContext';
 import Toast from '@/components/Toast';
@@ -51,6 +51,13 @@ export default function SearchInput() {
       setSearching(false);
     }
   };
+
+  // Automatically clear error message after 3 seconds
+  useEffect(() => {
+    if (!searchError) return;
+    const timeout = setTimeout(() => setSearchError(''), 3000);
+    return () => clearTimeout(timeout);
+  }, [searchError]);
 
   return (
     <>
