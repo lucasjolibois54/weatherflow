@@ -88,8 +88,9 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 👨‍💻 Developed by
+## 👨‍💻 Author
 
-[Lucas Jolibois](https://lucasjolibois.com)
+Developed by **Lucas Jolibois**  
 
----
+🌐 [lucasjolibois.com](https://lucasjolibois.com)  
+🐙 [github.com/lucasjolibois54](https://github.com/lucasjolibois54)
