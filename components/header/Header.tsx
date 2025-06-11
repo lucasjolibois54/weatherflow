@@ -2,7 +2,7 @@
 
 import { FiMapPin } from 'react-icons/fi';
 import SearchInput from './SearchInput';
-import TemperatureToggle from '../TemperatureToggle';
+import TemperatureToggle from './TemperatureToggle';
 import { useWeather } from '@/context/WeatherContext';
 
 export default function Header() {

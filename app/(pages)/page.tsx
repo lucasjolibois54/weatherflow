@@ -1,4 +1,4 @@
-import WeatherDashboard from "@/components/WeatherDashboard";
+import WeatherDashboard from "@/components/weather-dashboard/WeatherDashboard";
 
 export default function Home() {
   return (

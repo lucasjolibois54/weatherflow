@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useWeather } from '@/context/WeatherContext';
-import Toast from '@/components/Toast';
+import Toast from '@/components/main/Toast';
 
 export default function SearchInput() {
   const [query, setQuery] = useState('');

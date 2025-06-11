@@ -1,14 +1,14 @@
 'use client';
 
 import { useWeather } from '@/context/WeatherContext';
-import TodaysWeatherCard from './TodaysWeatherCard';
-import NextFourDays from './NextFourDays';
+import TodaysWeatherCard from './dashboard-cards/TodaysWeatherCard';
+import NextFourDays from './dashboard-cards/NextFourDays';
 import dynamic from 'next/dynamic';
-import Header from './header/Header';
-import BackgroundVideo from './BackgroundVideo';
+import Header from '../header/Header';
+import BackgroundVideo from './dashboard-background/BackgroundVideo';
 
 // Load map dynamically to avoid SSR issues)
-const Map = dynamic(() => import('./Map'), {
+const Map = dynamic(() => import('./dashboard-cards/Map'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[300px] md:h-[400px] rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">

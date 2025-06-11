@@ -10,7 +10,7 @@ import {
 import { useWeather } from '@/context/WeatherContext';
 import { useState, useEffect } from 'react';
 import L from 'leaflet';
-import Toast from '@/components/Toast';
+import Toast from '@/components/main/Toast';
 
 // Custom pin icon
 const pinIcon = new L.DivIcon({
